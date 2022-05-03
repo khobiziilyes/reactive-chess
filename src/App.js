@@ -20,7 +20,7 @@ function ChessSquare(rowId, columnId) {
 		return <td className="chess-text">{ rowId }</td>;
 	}
 
-	const color = ((rowId % 2) + columnId) % 2 ? 'white' : 'black';
+	const color = ((rowId % 2) + columnId) % 2 ? 'light' : 'dark';
 	
 
 	return (

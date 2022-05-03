@@ -34,11 +34,11 @@ tr {
     height: 10%;
 }
 
-.chess-black {
+.chess-dark {
     background-color: #779556;
 }
 
-.chess-white {
+.chess-light {
     background-color: #ebecd0;
 }
 

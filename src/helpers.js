@@ -1,0 +1,1 @@
+export const getColumnCode = columnId => String.fromCharCode(64 + columnId);

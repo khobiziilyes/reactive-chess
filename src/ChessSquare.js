@@ -1,19 +1,48 @@
 import { getColumnCode } from './helpers';
 
-function getSquareContent(rowId, columnId) {
-	const showImg = [1, 2, 7, 8].includes(rowId);
+export class ChessSquare {
+	constructor(rowId, columnId) {
+		this.rowId = rowId;
+		this.columnId = columnId;
+		this.columnCode = getColumnCode(columnId);
+		this.piece = null;
+	}
 
-	return showImg && <img
-		src="piecesSvg/king.svg"
+	setPiece(piece) {
+		this.piece = piece;
+	}
+
+	up() {
+		return new ChessSquare(this.rowId + 1, this.columnId);
+	}
+
+	down() {
+		return new ChessSquare(this.rowId - 1, this.columnId);
+	}
+
+	right() {
+		return new ChessSquare(this.rowId, this.columnId + 1);
+	}
+
+	left() {
+		return new ChessSquare(this.rowId, this.columnId - 1);
+	}
+}
+
+function getSquareContent(piece) {	
+	return piece && <img
+		src={`piecesSvg/${piece.isLightColor ? 'light' : 'dark'}/${piece.svgName}.svg`}
 		alt=""
 		className="chess-svg"
 	/>
 }
 
-export default function ChessSquare(rowId, columnId) {
+export default function ChessSquareComponent(chessSquare) {
+	const { rowId, columnId } = chessSquare;
+
 	if (rowId === 0 || rowId === 9) {
 		if (columnId === 0 || columnId === 9) return <td></td>;
-		return <td className="chess-text">{ getColumnCode(columnId) }</td>;
+		return <td className="chess-text">{ chessSquare.columnCode }</td>;
 	}
 
 	if (columnId === 0 || columnId === 9) {
@@ -21,11 +50,10 @@ export default function ChessSquare(rowId, columnId) {
 	}
 
 	const color = ((rowId % 2) + columnId) % 2 ? 'light' : 'dark';
-	
 
 	return (
 		<td className={`chess-${color}`}>
-			{ getSquareContent(rowId, columnId) }
+			{ getSquareContent(chessSquare.piece) }
 		</td>
 	);
 }

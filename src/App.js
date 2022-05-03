@@ -1,11 +1,23 @@
-import ChessRow from './ChessRow';
+import { useState } from 'react';
+import { getInitialSquares } from './helpers';
+import ChessSquareComponent from './ChessSquare';
 
 function App() {
+	const [squares, setSquares] = useState(getInitialSquares());
+
 	return (
 		<table>
 			<tbody>
 				{
-					Array(10).fill(null).map((_, i) => ChessRow(9 - i))
+					squares.map(chessRow => 
+						<tr>
+							{
+								chessRow.map(chessSquare => 
+									ChessSquareComponent(chessSquare)
+								)
+							}
+						</tr>
+					)
 				}
 			</tbody>
 		</table>

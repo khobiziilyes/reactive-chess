@@ -1,0 +1,52 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background-color: #312e2b;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+    padding: 2%;
+    box-sizing: border-box;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table {
+    height: 50vw;
+    width: 50vw;
+
+    table-layout: fixed;
+}
+
+td {
+    text-align: center; 
+    vertical-align: middle;
+}
+
+tr {
+    height: 10%;
+}
+
+.chess-black {
+    background-color: #779556;
+}
+
+.chess-white {
+    background-color: #ebecd0;
+}
+
+.chess-svg {
+    height: 80%;
+}
+
+.chess-text {
+    color: aliceblue;
+    font-size: 30px;
+}

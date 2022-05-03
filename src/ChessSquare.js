@@ -5,7 +5,9 @@ export class ChessSquare {
 		this.rowId = rowId;
 		this.columnId = columnId;
 		this.columnCode = getColumnCode(columnId);
+		
 		this.piece = null;
+		this.isFocused = false;
 	}
 
 	setPiece(piece) {
@@ -39,16 +41,6 @@ function getSquareContent(piece) {
 
 export default function ChessSquareComponent(chessSquare) {
 	const { rowId, columnId } = chessSquare;
-
-	if (rowId === 0 || rowId === 9) {
-		if (columnId === 0 || columnId === 9) return <td></td>;
-		return <td className="chess-text">{ chessSquare.columnCode }</td>;
-	}
-
-	if (columnId === 0 || columnId === 9) {
-		return <td className="chess-text">{ rowId }</td>;
-	}
-
 	const color = ((rowId % 2) + columnId) % 2 ? 'light' : 'dark';
 
 	return (

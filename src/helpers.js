@@ -1,13 +1,13 @@
 import { ChessSquare } from "./ChessSquare";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "./Pieces";
 
-export const getColumnCode = columnId => String.fromCharCode(64 + columnId);
+export const getColumnCode = columnId => String.fromCharCode(65 + columnId);
 
 export const getInitialSquares = () => {
-    return Array(10).fill(null).map((_, i) => {
-        const rowId = 9 - i;
-
-        return Array(10).fill(null).map((_, columnId) => {
+    return Array(8).fill(null).map((_, i) => {
+        const rowId = 7 - i;
+        
+        return Array(8).fill(null).map((_, columnId) => {
             const chessSquare = new ChessSquare(rowId, columnId);
             const chessPiece = getInitialPiece(chessSquare);
 
@@ -20,13 +20,13 @@ export const getInitialSquares = () => {
 
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode } = chessSquare;
-    const idx = [1, 2, 7, 8].indexOf(rowId);
+    const idx = [0, 1, 6, 7].indexOf(rowId);
     
     if (idx < 0) return null;
 
     const isLightColor = idx < 2;
 
-    if ([2, 7].includes(rowId)) return new Pawn(isLightColor);
+    if ([1, 6].includes(rowId)) return new Pawn(isLightColor);
     
     switch (columnCode) {
         case 'A': case 'H':

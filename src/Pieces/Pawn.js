@@ -1,8 +1,7 @@
-export default class Pawn {
-    constructor(isLightColor) {
-        this.isLightColor = isLightColor;
-        
-        this.canJump = false;
-        this.svgName = 'pawn';
+export default function Pawn(isLightColor) {
+    return {
+        isLightColor: isLightColor,
+        canJump: false,
+        svgName: 'pawn',
     }
 }

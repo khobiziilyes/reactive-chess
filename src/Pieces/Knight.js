@@ -1,8 +1,7 @@
-export default class Knight {
-    constructor(isLightColor) {
-        this.isLightColor = isLightColor;
-        
-        this.canJump = true;
-        this.svgName = 'knight';
+export default function Knight(isLightColor) {
+    return {
+        isLightColor: isLightColor,
+        canJump: false,
+        svgName: 'knight',
     }
 }

@@ -1,13 +1,10 @@
-import { useState } from 'react';
-import { getColumnCode, getInitialSquares } from './helpers';
 import ChessSquareComponent from './ChessSquare';
+import ChessHeader from './ChessHeader';
 
-function ChessHeader() {
-	return new Array(10).fill(null).map((_, i) => <td className="chess-text">{ ![0, 9].includes(i) && getColumnCode(i - 1) }</td>);
-}
+import { useSelector } from 'react-redux';
 
 function App() {
-	const [squares, setSquares] = useState(getInitialSquares());
+	const squares = useSelector(state => state.squares);
 
 	return (
 		<table>
@@ -18,16 +15,16 @@ function App() {
 
 				{
 					squares.map(chessRow => 
-						<tr>
-							<td className="chess-text">{ chessRow[0].rowId + 1 }</td>
+						<tr key={`tr-${chessRow[0].rowId}`}>
+							<td className="chess-text">{ 8 - chessRow[0].rowId }</td>
 							
 							{
 								chessRow.map(chessSquare => 
-									ChessSquareComponent(chessSquare)
+									<ChessSquareComponent chessSquare={chessSquare} key={`SQUARE-${chessSquare.columnCode}${chessSquare.rowId}`}></ChessSquareComponent>
 								)
 							}
 
-							<td className="chess-text">{ chessRow[0].rowId + 1 }</td>
+							<td className="chess-text">{ 8 - chessRow[0].rowId }</td>
 						</tr>
 					)
 				}

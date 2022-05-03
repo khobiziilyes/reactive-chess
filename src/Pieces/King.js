@@ -1,8 +1,7 @@
-export default class King {
-    constructor(isLightColor) {
-        this.isLightColor = isLightColor;
-        
-        this.canJump = false;
-        this.svgName = 'king';
+export default function King(isLightColor) {
+    return {
+        isLightColor: isLightColor,
+        canJump: false,
+        svgName: 'king',
     }
 }

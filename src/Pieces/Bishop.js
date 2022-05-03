@@ -1,8 +1,7 @@
-export default class Bishop {
-    constructor(isLightColor) {
-        this.isLightColor = isLightColor;
-        
-        this.canJump = false;
-        this.svgName = 'bishop';
+export default function Bishop(isLightColor) {
+    return {
+        isLightColor: isLightColor,
+        canJump: false,
+        svgName: 'bishop',
     }
 }

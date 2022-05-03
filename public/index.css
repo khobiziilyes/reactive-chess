@@ -50,3 +50,7 @@ tr {
     color: aliceblue;
     font-size: 30px;
 }
+
+.chess-highlight {
+    filter: brightness(50%);
+}

@@ -1,8 +1,7 @@
-export default class Queen {
-    constructor(isLightColor) {
-        this.isLightColor = isLightColor;
-        
-        this.canJump = false;
-        this.svgName = 'queen';
+export default function Queen(isLightColor) {
+    return {
+        isLightColor,
+        canJump: false,
+        svgName: 'queen',
     }
 }

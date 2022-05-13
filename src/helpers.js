@@ -18,7 +18,7 @@ export const getInitialSquares = () => {
 
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode } = chessSquare;
-    if (rowId === 2 && columnCode === 'e') return Pawn(true);
+    if (rowId === 3 && columnCode === 'e') return Pawn(true);
 
     const idx = [0, 1, 6, 7].indexOf(rowId);
     
@@ -66,3 +66,9 @@ export const findPath = ({ rowId: fromRow, columnId: fromColumn }, { rowId: toRo
 
     return path.slice(1);
 }
+
+export const getMoveData = (fromSquare, toSquare) => ({
+    rowsDiff: Math.abs(fromSquare.rowId - toSquare.rowId),
+    colsDiff: Math.abs(fromSquare.columnId - toSquare.columnId),
+    isForward: (toSquare.rowId - fromSquare.rowId) * (fromSquare.piece.isLightColor ? 1 : -1) < 0
+})

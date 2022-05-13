@@ -75,5 +75,9 @@ tr {
 }
 
 .chess-take {
-    background-color: rgb(220, 138, 138);
+    background-color: rgb(127, 159, 233);
+}
+
+.chess-check {
+    background-color: rgb(220, 85, 85);
 }

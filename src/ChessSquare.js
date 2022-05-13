@@ -28,10 +28,13 @@ export default function ChessSquareComponent({ chessSquare }) {
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
-		if (isTake) {
-			// dispatch(takePiece(chessSquare));
-		} else if (isLegal) {
-			dispatch(movePiece(chessSquare));
+		if (isLegal) {
+			dispatch(highlightSquare(null));
+			
+			dispatch(movePiece({
+				fromSquare: highlightedSquare,
+				toSquare: chessSquare
+			}));
 		} else {
 			dispatch(highlightSquare(chessSquare));
 		}

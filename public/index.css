@@ -34,6 +34,10 @@ tr {
     height: 10%;
 }
 
+.chess-square {
+    position: relative;
+}
+
 .chess-dark {
     background-color: #779556;
 }
@@ -52,5 +56,24 @@ tr {
 }
 
 .chess-highlight {
-    filter: brightness(50%);
+    filter: brightness(80%);
+}
+
+.chess-legal {
+    height: 25px;
+    width: 25px;
+    background-color: #d6d6bc;
+    border-radius: 50%;
+    opacity: 0.5;
+    z-index: 10;
+
+    position: absolute;
+    
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.chess-take {
+    background-color: rgb(220, 138, 138);
 }

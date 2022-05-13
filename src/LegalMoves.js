@@ -1,32 +1,25 @@
-import { findPath } from "./helpers";
+import { findPath, getMoveData } from "./helpers";
 
 export const isMoveLegal = (fromSquare, toSquare, squares) => {    
     if (!fromSquare) return false;
     if (fromSquare.piece.isLightColor === toSquare.piece?.isLightColor) return false;
 
-    const { rowId: newRowId, columnId: newColumnId } = toSquare;
-    const { rowId, columnId } = fromSquare;
-
-    const diffs = {
-        rowsDiff: Math.abs(rowId - newRowId),
-        colsDiff: Math.abs(columnId - newColumnId),
-        isForward: (newRowId - rowId) * (fromSquare.piece.isLightColor ? 1 : -1) < 0
-    }
+    const moveData = getMoveData(fromSquare, toSquare);
 
     const isInMovingRange = (() => {
         switch (fromSquare.piece.name) {
             case 'pawn':
-                return isPawnMoveLegal(diffs, fromSquare, toSquare, squares);
+                return isPawnMoveLegal(moveData, fromSquare, toSquare, squares);
             case 'rook':
-                return isRookMoveLegal(diffs, fromSquare, toSquare, squares);
+                return isRookMoveLegal(moveData, fromSquare, toSquare, squares);
             case 'bishop':
-                return isBishopMoveLegal(diffs, fromSquare, toSquare, squares);
+                return isBishopMoveLegal(moveData, fromSquare, toSquare, squares);
             case 'knight':
-                return isKnightMoveLegal(diffs, fromSquare, toSquare, squares);
+                return isKnightMoveLegal(moveData, fromSquare, toSquare, squares);
             case 'king':
-                return isKingMoveLegal(diffs, fromSquare, toSquare, squares);
+                return isKingMoveLegal(moveData, fromSquare, toSquare, squares);
             case 'queen':
-                return isQueenMoveLegal(diffs, fromSquare, toSquare, squares);
+                return isQueenMoveLegal(moveData, fromSquare, toSquare, squares);
             default:
                 return false;
         }
@@ -44,17 +37,24 @@ export const isMoveLegal = (fromSquare, toSquare, squares) => {
     return true;
 }
 
-const isPawnMoveLegal = ({ rowsDiff, colsDiff, isForward }, { rowId }, { piece }) => {
+const isPawnMoveLegal = ({ rowsDiff, colsDiff, isForward }, { rowId: fromRow }, { piece, columnId: toColumn }, squares) => {
     if (!isForward) return false;
     
-    if (piece) {
-        return isForward && colsDiff === 1 && rowsDiff === 1;
-    } else {
-        const neverMoved = [1, 6].includes(rowId);
-        const maxDiff = neverMoved ? 2 : 1;
+    if (colsDiff === 1 && rowsDiff === 1) {
+        if (piece) return true;
+        
+        const { piece: enPassantPiece } = squares[fromRow][toColumn];
 
-        return !colsDiff && rowsDiff <= maxDiff;
+        if (enPassantPiece?.lastMove) {
+            const { name, lastMove: { fromSquare, toSquare } } = enPassantPiece;
+            if (name === 'pawn' && Math.abs(fromSquare.rowId - toSquare.rowId) === 2) return true;
+        }
     }
+    
+    const neverMoved = [1, 6].includes(fromRow);
+    const maxDiff = neverMoved ? 2 : 1;
+
+    return !colsDiff && rowsDiff <= maxDiff && !piece;
 }
 
 const isRookMoveLegal = ({ rowsDiff, colsDiff }) => {

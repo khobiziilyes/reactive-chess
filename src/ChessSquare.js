@@ -1,6 +1,7 @@
-import { useDispatch } from 'react-redux';
-import { getColumnCode } from './helpers';
-import { highlightSquare } from './state/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { areSquaresEqual, getColumnCode } from './helpers';
+import { isMoveLegal } from './LegalMoves';
+import { highlightSquare, movePiece } from './state/store';
 
 export function ChessSquare(rowId, columnId) {
 	return {
@@ -8,28 +9,46 @@ export function ChessSquare(rowId, columnId) {
 		columnId,
 		columnCode: getColumnCode(columnId),
 		piece: null,
-		isHighlighted: false,
 		isLightColor: ((rowId % 2) + columnId) % 2 === 1
 	}
 }
 
-function getSquareContent(piece) {	
-	return piece && <img
-		src={`piecesSvg/${piece.isLightColor ? 'light' : 'dark'}/${piece.svgName}.svg`}
-		alt=""
-		className="chess-svg"
-	/>
-}
-
 export default function ChessSquareComponent({ chessSquare }) {
-	const { rowId, columnId, isHighlighted, isLightColor } = chessSquare;
+	const { isLightColor, piece } = chessSquare;
+
+	const highlightedSquare = useSelector(state => state.highlightedSquare);
+	const squares = useSelector(state => state.squares);
+
+	const isHighlighted = areSquaresEqual(chessSquare, highlightedSquare);
+	const isLegal = isMoveLegal(highlightedSquare, chessSquare, squares);
+	const isTake = isLegal && piece;
+
 	const color = isLightColor ? 'dark' : 'light';
 
 	const dispatch = useDispatch();
 
+	const handleClick = () => {
+		if (isTake) {
+			// dispatch(takePiece(chessSquare));
+		} else if (isLegal) {
+			dispatch(movePiece(chessSquare));
+		} else {
+			dispatch(highlightSquare(chessSquare));
+		}
+	}
+
 	return (
-		<td className={`chess-${color} ${isHighlighted && 'chess-highlight'}`} onClick={() => dispatch(highlightSquare(chessSquare))}>
-			{ getSquareContent(chessSquare.piece) }
+		<td className={`chess-square chess-${isTake ? 'take' : color} ${isHighlighted && 'chess-highlight'}`} onClick={handleClick}>
+			{ piece && <img
+				src={`piecesSvg/${piece.isLightColor ? 'light' : 'dark'}/${piece.name}.svg`}
+				alt=""
+				className="chess-svg"
+				draggable="false" />
+			}
+
+			{
+				!piece && isLegal && <span className="chess-legal"></span>
+			}
 		</td>
 	);
 }

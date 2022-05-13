@@ -8,17 +8,27 @@ export const squaresSlice = createSlice({
     name: 'squares',
     initialState: getInitialSquares(),
     reducers: {
-        movePiece: movePieceFunc,
-        highlightSquare: highlightSquareFunc
+        movePiece: movePieceFunc
     }
 });
 
-const reducer = squaresSlice.reducer;
-
-export const store = configureStore({
-    reducer: {
-        squares: reducer
+export const highlightedSquareSlice = createSlice({
+    name: 'highlightedSquare',
+    initialState: null,
+    reducers: {
+        highlightSquare: highlightSquareFunc
     }
 })
 
-export const { movePiece, highlightSquare } = squaresSlice.actions;
+const squaresReducer = squaresSlice.reducer;
+const highlightedSquareReducer = highlightedSquareSlice.reducer;
+
+export const store = configureStore({
+    reducer: {
+        squares: squaresReducer,
+        highlightedSquare: highlightedSquareReducer
+    }
+})
+
+export const { movePiece } = squaresSlice.actions;
+export const { highlightSquare } = highlightedSquareSlice.actions;

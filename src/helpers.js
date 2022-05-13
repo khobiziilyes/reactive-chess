@@ -18,6 +18,8 @@ export const getInitialSquares = () => {
 
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode } = chessSquare;
+    if (rowId === 2 && columnCode === 'e') return Pawn(true);
+
     const idx = [0, 1, 6, 7].indexOf(rowId);
     
     if (idx < 0) return null;
@@ -40,4 +42,27 @@ export const getInitialPiece = chessSquare => {
         default:
             return null;
     };
+}
+
+export const areSquaresEqual = (x, y) => x && y && x.rowId === y.rowId && x.columnId === y.columnId;
+
+export const findPath = ({ rowId: fromRow, columnId: fromColumn }, { rowId: toRow, columnId: toColumn }) => {
+    let rowsDiff = toRow - fromRow;
+    let columnsDiff = toColumn - fromColumn;
+    
+    const path = [];
+
+    while (rowsDiff || columnsDiff) {
+        const rowId = toRow - rowsDiff;
+        const columnId = toColumn - columnsDiff;
+
+        const square = ChessSquare(rowId, columnId);
+        
+        path.push(square);
+
+        if (rowsDiff) rowsDiff -= Math.sign(rowsDiff);
+        if (columnsDiff) columnsDiff -= Math.sign(columnsDiff);
+    }
+
+    return path.slice(1);
 }

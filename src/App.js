@@ -23,7 +23,7 @@ function App() {
 				{
 					squares.map(chessRow => 
 						<tr key={`tr-${chessRow[0].rowId}`}>
-							<td className="chess-text">{ 8 - chessRow[0].rowId } - { chessRow[0].rowId }</td>
+							<td className="chess-text">{ chessRow[0].rowCode } - { chessRow[0].rowId }</td>
 							
 							{
 								chessRow.map(chessSquare => 

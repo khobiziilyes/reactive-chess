@@ -1,15 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { areSquaresEqual, getColumnCode } from './helpers';
+import { areSquaresEqual, getColumnCode, isInCheck } from './helpers';
 import { isMoveLegal } from './LegalMoves';
 import { highlightSquare, movePiece } from './state/store';
 
 export function ChessSquare(rowId, columnId) {
+	const columnCode = getColumnCode(columnId);
+	const rowCode = 8 - rowId;
+
 	return {
 		rowId,
 		columnId,
-		columnCode: getColumnCode(columnId),
+		columnCode,
+		rowCode,
 		piece: null,
-		isLightColor: ((rowId % 2) + columnId) % 2 === 1
+		isLightColor: ((rowId % 2) + columnId) % 2 === 1,
+		name: columnCode + rowCode
 	}
 }
 
@@ -22,6 +27,7 @@ export default function ChessSquareComponent({ chessSquare }) {
 	const isHighlighted = areSquaresEqual(chessSquare, highlightedSquare);
 	const isLegal = isMoveLegal(highlightedSquare, chessSquare, squares);
 	const isTake = isLegal && piece;
+	const inCheck = isInCheck(chessSquare, squares);
 
 	const color = isLightColor ? 'dark' : 'light';
 
@@ -41,7 +47,7 @@ export default function ChessSquareComponent({ chessSquare }) {
 	}
 
 	return (
-		<td className={`chess-square chess-${isTake ? 'take' : color} ${isHighlighted && 'chess-highlight'}`} onClick={handleClick}>
+		<td className={`chess-square ${inCheck && 'chess-check'} chess-${isTake ? 'take' : color} ${isHighlighted && 'chess-highlight'}`} onClick={handleClick}>
 			{ piece && <img
 				src={`piecesSvg/${piece.isLightColor ? 'light' : 'dark'}/${piece.name}.svg`}
 				alt=""

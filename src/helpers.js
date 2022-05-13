@@ -1,4 +1,5 @@
 import { ChessSquare } from "./ChessSquare";
+import { isMoveLegal } from "./LegalMoves";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "./Pieces";
 
 export const getColumnCode = columnId => String.fromCharCode(97 + columnId);
@@ -17,8 +18,10 @@ export const getInitialSquares = () => {
 }
 
 export const getInitialPiece = chessSquare => {
-    const { rowId, columnCode } = chessSquare;
-    if (rowId === 3 && columnCode === 'e') return Pawn(true);
+    const { rowId, columnCode, name } = chessSquare;
+
+    if (name === 'd3') return Queen(true);
+    if (name === 'g6') return King(false);
 
     const idx = [0, 1, 6, 7].indexOf(rowId);
     
@@ -72,3 +75,14 @@ export const getMoveData = (fromSquare, toSquare) => ({
     colsDiff: Math.abs(fromSquare.columnId - toSquare.columnId),
     isForward: (toSquare.rowId - fromSquare.rowId) * (fromSquare.piece.isLightColor ? 1 : -1) < 0
 })
+
+export const isInCheck = (kingSquare, squares) => {
+    if (kingSquare?.piece?.name !== 'king') return false;
+    
+    const idk = squares.flatMap(_ => _)
+        .filter(_ => _.piece)
+        .filter(_ => _.piece.isLightColor !== kingSquare.piece.isLightColor)
+        .find(_ => isMoveLegal(_, kingSquare, squares));
+
+    return idk;
+}

@@ -2,16 +2,9 @@ import ChessSquareComponent from './ChessSquare';
 import ChessHeader from './ChessHeader';
 
 import { useSelector } from 'react-redux';
-import { findPath } from './helpers';
-import { useEffect } from 'react';
 
 function App() {
 	const { squares } = useSelector(state => state.squares);
-
-	useEffect(() => {
-		const those = findPath(squares[7][3], squares[4][0]);
-		console.log(those);
-	});
 
 	return (
 		<table>

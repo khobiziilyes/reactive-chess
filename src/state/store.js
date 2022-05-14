@@ -6,29 +6,22 @@ import highlightSquareFunc from './highlightSquare';
 
 export const squaresSlice = createSlice({
     name: 'squares',
-    initialState: getInitialSquares(),
+    initialState: {
+        squares: getInitialSquares(),
+        highlightedSquare: null
+    },
     reducers: {
-        movePiece: movePieceFunc
+        movePiece: movePieceFunc,
+        highlightSquare: highlightSquareFunc
     }
 });
 
-export const highlightedSquareSlice = createSlice({
-    name: 'highlightedSquare',
-    initialState: null,
-    reducers: {
-        highlightSquare: highlightSquareFunc
-    }
-})
-
 const squaresReducer = squaresSlice.reducer;
-const highlightedSquareReducer = highlightedSquareSlice.reducer;
 
 export const store = configureStore({
     reducer: {
-        squares: squaresReducer,
-        highlightedSquare: highlightedSquareReducer
+        squares: squaresReducer
     }
 })
 
-export const { movePiece } = squaresSlice.actions;
-export const { highlightSquare } = highlightedSquareSlice.actions;
+export const { movePiece, highlightSquare } = squaresSlice.actions;

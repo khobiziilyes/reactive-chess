@@ -8,18 +8,20 @@ export default function movePiece(state, { payload }) {
 
     if (fromSquare.piece.name === 'pawn') {
         const { rowsDiff, colsDiff } = getMoveData(fromSquare, toSquare);
-        if (rowsDiff === 1 && colsDiff === 1) state[fromRow][toColumn].piece = null;
+        if (rowsDiff === 1 && colsDiff === 1) state.squares[fromRow][toColumn].piece = null;
     }
 
-    const { piece } = state[fromRow][fromColumn];
+    const { piece } = state.squares[fromRow][fromColumn];
 
-    state[fromRow][fromColumn].piece = null;
+    state.squares[fromRow][fromColumn].piece = null;
     
-    state[toRow][toColumn].piece = {
+    state.squares[toRow][toColumn].piece = {
         ...piece,
         lastMove: {
             fromSquare,
             toSquare
         }
     };
+
+    state.highlightedSquare = null;
 }

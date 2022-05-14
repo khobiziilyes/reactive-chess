@@ -21,8 +21,7 @@ export function ChessSquare(rowId, columnId) {
 export default function ChessSquareComponent({ chessSquare }) {
 	const { isLightColor, piece } = chessSquare;
 
-	const highlightedSquare = useSelector(state => state.highlightedSquare);
-	const squares = useSelector(state => state.squares);
+	const { squares, highlightedSquare } = useSelector(state => state.squares);
 
 	const isHighlighted = areSquaresEqual(chessSquare, highlightedSquare);
 	const isLegal = isMoveLegal(highlightedSquare, chessSquare, squares);
@@ -35,8 +34,6 @@ export default function ChessSquareComponent({ chessSquare }) {
 
 	const handleClick = () => {
 		if (isLegal) {
-			dispatch(highlightSquare(null));
-			
 			dispatch(movePiece({
 				fromSquare: highlightedSquare,
 				toSquare: chessSquare

@@ -20,9 +20,10 @@ export const getInitialSquares = () => {
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode, name } = chessSquare;
 
-    if (name === 'd3') return Queen(true);
-    if (name === 'g6') return King(false);
-
+    if (name === 'd3') return Queen(false);
+    if (name === 'g6') return King(true);
+    if (name === 'e1') return null;
+    
     const idx = [0, 1, 6, 7].indexOf(rowId);
     
     if (idx < 0) return null;
@@ -77,12 +78,8 @@ export const getMoveData = (fromSquare, toSquare) => ({
 })
 
 export const isInCheck = (kingSquare, squares) => {
-    if (kingSquare?.piece?.name !== 'king') return false;
-    
-    const idk = squares.flatMap(_ => _)
+    return kingSquare?.piece?.name === 'king' && squares.flatMap(_ => _)
         .filter(_ => _.piece)
         .filter(_ => _.piece.isLightColor !== kingSquare.piece.isLightColor)
         .find(_ => isMoveLegal(_, kingSquare, squares));
-
-    return idk;
 }

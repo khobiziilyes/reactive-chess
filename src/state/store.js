@@ -1,27 +1,26 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-import { getInitialSquares } from "../helpers";
-import movePieceFunc from "./movePiece";
-import highlightSquareFunc from './highlightSquare';
+import { getInitialPlayerState, getInitialSquares } from "../helpers";
+import mainReducerFunc from "./mainAction";
 
 export const squaresSlice = createSlice({
     name: 'squares',
     initialState: {
         squares: getInitialSquares(),
-        highlightedSquare: null
+        highlightedSquare: null,
+        players: [getInitialPlayerState(true), getInitialPlayerState(false)]
     },
     reducers: {
-        movePiece: movePieceFunc,
-        highlightSquare: highlightSquareFunc
+        mainReducer: mainReducerFunc
     }
 });
 
-const squaresReducer = squaresSlice.reducer;
+const mainReducer = squaresSlice.reducer;
 
 export const store = configureStore({
     reducer: {
-        squares: squaresReducer
+        squares: mainReducer
     }
 })
 
-export const { movePiece, highlightSquare } = squaresSlice.actions;
+export const { mainReducer: mainAction } = squaresSlice.actions;

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { areSquaresEqual, getColumnCode, isInCheck } from './helpers';
-import { isMoveLegal } from './LegalMoves';
-import { highlightSquare, movePiece } from './state/store';
+import { getColumnCode, isInCheck } from './helpers';
+import { mainAction } from './state/store';
 
 export function ChessSquare(rowId, columnId) {
 	const columnCode = getColumnCode(columnId);
@@ -14,18 +13,18 @@ export function ChessSquare(rowId, columnId) {
 		rowCode,
 		piece: null,
 		isLightColor: ((rowId % 2) + columnId) % 2 === 1,
-		name: columnCode + rowCode
+		name: columnCode + rowCode,
+		isHighlighted: false,
+		possibleMove: null
 	}
 }
 
 export default function ChessSquareComponent({ chessSquare }) {
-	const { isLightColor, piece } = chessSquare;
+	const { isLightColor, piece, isHighlighted, possibleMove } = chessSquare;
 
-	const { squares, highlightedSquare } = useSelector(state => state.squares);
+	const { squares } = useSelector(state => state.squares);
 
-	const isHighlighted = areSquaresEqual(chessSquare, highlightedSquare);
-	const isLegal = isMoveLegal(highlightedSquare, chessSquare, squares);
-	const isTake = isLegal && piece;
+	const isTake = possibleMove && piece;
 	const inCheck = isInCheck(chessSquare, squares);
 
 	const color = isLightColor ? 'dark' : 'light';
@@ -33,13 +32,16 @@ export default function ChessSquareComponent({ chessSquare }) {
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
-		if (isLegal) {
-			dispatch(movePiece({
-				fromSquare: highlightedSquare,
-				toSquare: chessSquare
+		if (possibleMove) {
+			dispatch(mainAction({
+				type: 'movePiece',
+				data: chessSquare
 			}));
 		} else {
-			dispatch(highlightSquare(chessSquare));
+			dispatch(mainAction({
+				type: 'highlightSquare',
+				data: chessSquare
+			}));
 		}
 	}
 
@@ -53,7 +55,7 @@ export default function ChessSquareComponent({ chessSquare }) {
 			}
 
 			{
-				!piece && isLegal && <span className="chess-legal"></span>
+				!piece && possibleMove && <span className="chess-legal"></span>
 			}
 		</td>
 	);

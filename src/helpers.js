@@ -1,5 +1,5 @@
 import { ChessSquare } from "./ChessSquare";
-import { isMoveLegal } from "./LegalMoves";
+import { getPossibleMove } from "./LegalMoves";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "./Pieces";
 
 export const getColumnCode = columnId => String.fromCharCode(97 + columnId);
@@ -71,15 +71,21 @@ export const findPath = ({ rowId: fromRow, columnId: fromColumn }, { rowId: toRo
     return path.slice(1);
 }
 
-export const getMoveData = (fromSquare, toSquare) => ({
+export const getMoveData = (fromSquare, toSquare, piece) => ({
     rowsDiff: Math.abs(fromSquare.rowId - toSquare.rowId),
     colsDiff: Math.abs(fromSquare.columnId - toSquare.columnId),
-    isForward: (toSquare.rowId - fromSquare.rowId) * (fromSquare.piece.isLightColor ? 1 : -1) < 0
+    isForward: (toSquare.rowId - fromSquare.rowId) * (piece.isLightColor ? 1 : -1) < 0
 })
 
 export const isInCheck = (kingSquare, squares) => {
     return kingSquare?.piece?.name === 'king' && squares.flatMap(_ => _)
         .filter(_ => _.piece)
         .filter(_ => _.piece.isLightColor !== kingSquare.piece.isLightColor)
-        .find(_ => isMoveLegal(_, kingSquare, squares));
+        .find(_ => getPossibleMove(_, kingSquare, squares));
 }
+
+export const getInitialPlayerState = isLightColor => ({
+    isLightColor,
+    lastMove: null,
+    kingSquare: ChessSquare(isLightColor ? 7 : 0, 4)
+});

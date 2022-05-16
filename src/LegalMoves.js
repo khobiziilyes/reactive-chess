@@ -1,5 +1,5 @@
 import produce from "immer";
-import { areSquaresEqual, findPath, getMoveData } from "./helpers";
+import { areSquaresEqual, getMoveData, isMoveBlocked } from "./helpers";
 import movePiece from "./state/movePiece";
 import setInCheck from "./state/setInCheck";
 
@@ -45,11 +45,8 @@ export const getPossibleMove = (fromSquare, toSquare, squares) => {
 
     if (!possibleMove) return null;
 
-    // Remove blocked paths
-    if (fromSquare.piece.name !== 'knight') {
-        const blockingSquare = findPath(fromSquare, toSquare).find(_ => squares[_.rowId][_.columnId].piece);
-        if (blockingSquare) return null;
-    }
+    const blockedPath = isMoveBlocked(fromSquare, toSquare, squares, fromSquare.piece.name);
+    if (blockedPath) return null;
 
     if (possibleMove === true) return { type: 'normal' };
     if (possibleMove === false) return null;
@@ -57,7 +54,7 @@ export const getPossibleMove = (fromSquare, toSquare, squares) => {
     return possibleMove;
 }
 
-const getPawnLegalMove = ({ rowsDiff, colsDiff, isForward }, { rowId: fromRow, piece: fromPiece }, { piece: toPiece, columnId: toColumn }, squares) => {
+const getPawnLegalMove = ({ rowsDiff, colsDiff, isForward }, { rowId: fromRow, piece }, { piece: toPiece, columnId: toColumn }, squares) => {
     if (!isForward) return false;
     
     if (colsDiff === 1 && rowsDiff === 1) {
@@ -68,20 +65,50 @@ const getPawnLegalMove = ({ rowsDiff, colsDiff, isForward }, { rowId: fromRow, p
         if (enPassantPiece?.lastMove) {
             const { name, lastMove: { fromSquare, toSquare } } = enPassantPiece;
             
-            if (name === 'pawn' && getMoveData(fromSquare, toSquare, fromPiece).rowsDiff === 2) return {
+            if (name === 'pawn' && getMoveData(fromSquare, toSquare, piece).rowsDiff === 2) return {
                 type: 'enPassant'
             };
         }
     }
     
-    const neverMoved = !fromPiece.lastMove;
+    const neverMoved = !piece.lastMove;
     const maxDiff = neverMoved ? 2 : 1;
 
     return !colsDiff && rowsDiff <= maxDiff && !toPiece;
 }
 
+const isKingMoveLegal = ({ rowsDiff, colsDiff }, fromSquare, toSquare, squares) => {
+    if (colsDiff <= 1 && rowsDiff <= 1) return true;
+
+    const { piece } = fromSquare;
+    const { rowId: toRow, columnId: toColumn } = toSquare;
+
+    if (piece.lastMove) return false;
+
+    const firstRow = piece.isLightColor ? 7 : 0;
+    if (toRow !== firstRow) return false;
+
+    const isCastleSquare = (toColumn === 2 || toColumn === 6);
+    if (!isCastleSquare) return false;
+
+    const isShortCastle = toColumn === 6;
+    const rookSquare = squares[firstRow][isShortCastle ? 7 : 0];
+    
+    if (!rookSquare.piece) return false;
+    if (rookSquare.piece.lastMove) return false;
+
+    const isBlocked = isMoveBlocked(fromSquare, rookSquare, squares, 'rook');
+    if (isBlocked) return false;
+    
+    return {
+        type: 'castling',
+        rookRow: rookSquare.rowId,
+        rookColumn: rookSquare.columnId,
+        isShortCastle
+    };
+}
+
 const isRookMoveLegal = ({ rowsDiff, colsDiff }) => !colsDiff || !rowsDiff;
 const isBishopMoveLegal = ({ rowsDiff, colsDiff }) => colsDiff === rowsDiff;
 const isKnightMoveLegal = ({ rowsDiff, colsDiff }) => (colsDiff === 2 && rowsDiff === 1) || (rowsDiff === 2 && colsDiff === 1);
-const isKingMoveLegal = ({ rowsDiff, colsDiff }) => colsDiff <= 1 && rowsDiff <= 1;
 const isQueenMoveLegal = (...args) => isRookMoveLegal(...args) || isBishopMoveLegal(...args);

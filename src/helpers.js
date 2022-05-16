@@ -19,9 +19,13 @@ export const getInitialSquares = () => {
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode, name } = chessSquare;
 
-    if (name === 'd3') return Queen(false);
-    if (name === 'g5') return King(true);
-    if (name === 'e1') return null;
+    if (name === 'f1') return null;
+    if (name === 'g1') return null;
+    if (['c1', 'd1'].includes(name)) return null;
+
+    // if (name === 'd3') return Queen(false);
+    // if (name === 'g5') return King(true);
+    // if (name === 'e1') return null;
     
     const idx = [0, 1, 6, 7].indexOf(rowId);
     
@@ -81,3 +85,15 @@ export const getInitialPlayerState = isLightColor => ({
     lastMove: null,
     kingSquare: null // ChessSquare(isLightColor ? 7 : 0, 4)
 });
+
+export const isMoveBlocked = (fromSquare, toSquare, squares, pieceName) => {
+    if (pieceName === 'knight') return false;
+    const path = findPath(fromSquare, toSquare);
+
+    return isPathBlocked(path, squares);
+}
+
+export const isPathBlocked = (path, squares) => {
+    const blockingSquare = path.find(_ => squares[_.rowId][_.columnId].piece);
+    return blockingSquare !== undefined;
+}

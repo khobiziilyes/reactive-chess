@@ -8,6 +8,8 @@ export default function setPossibleMove(squares, highlightedSquare) {
 
         if (!possibleMove) return;
 
+        // Check if the king is safe if the move is made.
+        
         const fromSquare = current(highlightedSquare);
         const toSquare = current(square)
         const currentSquares = current(squares);

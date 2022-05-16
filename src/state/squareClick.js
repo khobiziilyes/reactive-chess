@@ -28,6 +28,8 @@ export default function squareClick(state, { payload: chessSquareData }) {
     }
 
     setPossibleMove(squares, state.highlightedSquare);
+    
+    // TODO: Check for checkmate
 
     return state;
 }

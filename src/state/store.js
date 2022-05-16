@@ -1,7 +1,7 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 import { getInitialPlayerState, getInitialSquares } from "../helpers";
-import mainReducerFunc from "./mainAction";
+import squareClickReducer from "./squareClick";
 
 export const squaresSlice = createSlice({
     name: 'squares',
@@ -11,16 +11,16 @@ export const squaresSlice = createSlice({
         players: [getInitialPlayerState(true), getInitialPlayerState(false)]
     },
     reducers: {
-        mainReducer: mainReducerFunc
+        squareClick: squareClickReducer
     }
 });
 
-const mainReducer = squaresSlice.reducer;
+const squareClick = squaresSlice.reducer;
 
 export const store = configureStore({
     reducer: {
-        squares: mainReducer
+        squares: squareClick
     }
 })
 
-export const { mainReducer: mainAction } = squaresSlice.actions;
+export const { squareClick: squareClickAction } = squaresSlice.actions;

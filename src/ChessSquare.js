@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { getColumnCode, isInCheck } from './helpers';
-import { mainAction } from './state/store';
+import { useDispatch, } from 'react-redux';
+import { getColumnCode } from './helpers';
+import { squareClickAction } from './state/store';
 
 export function ChessSquare(rowId, columnId) {
 	const columnCode = getColumnCode(columnId);
@@ -15,35 +15,19 @@ export function ChessSquare(rowId, columnId) {
 		isLightColor: ((rowId % 2) + columnId) % 2 === 1,
 		name: columnCode + rowCode,
 		isHighlighted: false,
-		possibleMove: null
+		possibleMove: null,
+		inCheck: false
 	}
 }
 
 export default function ChessSquareComponent({ chessSquare }) {
-	const { isLightColor, piece, isHighlighted, possibleMove } = chessSquare;
-
-	const { squares } = useSelector(state => state.squares);
-
+	const { isLightColor, piece, isHighlighted, possibleMove, inCheck } = chessSquare;
+	
 	const isTake = possibleMove && piece;
-	const inCheck = isInCheck(chessSquare, squares);
-
 	const color = isLightColor ? 'dark' : 'light';
 
 	const dispatch = useDispatch();
-
-	const handleClick = () => {
-		if (possibleMove) {
-			dispatch(mainAction({
-				type: 'movePiece',
-				data: chessSquare
-			}));
-		} else {
-			dispatch(mainAction({
-				type: 'highlightSquare',
-				data: chessSquare
-			}));
-		}
-	}
+	const handleClick = () => dispatch(squareClickAction(chessSquare));
 
 	return (
 		<td className={`chess-square ${inCheck && 'chess-check'} chess-${isTake ? 'take' : color} ${isHighlighted && 'chess-highlight'}`} onClick={handleClick}>

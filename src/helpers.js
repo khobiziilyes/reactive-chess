@@ -15,7 +15,7 @@ export const getInitialSquares = () => {
             return chessSquare;
         });
     });
-}
+};
 
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode, name } = chessSquare;
@@ -45,8 +45,8 @@ export const getInitialPiece = chessSquare => {
             return King(isLightColor);
         default:
             return null;
-    };
-}
+    }
+};
 
 export const areSquaresEqual = (x, y) => x && y && x.rowId === y.rowId && x.columnId === y.columnId;
 
@@ -60,7 +60,7 @@ export const findPath = ({ rowId: fromRow, columnId: fromColumn }, { rowId: toRo
         const rowId = toRow - rowsDiff;
         const columnId = toColumn - columnsDiff;
 
-        const square = ChessSquare(rowId, columnId);
+        const square = { rowId, columnId };
         
         path.push(square);
 
@@ -69,23 +69,16 @@ export const findPath = ({ rowId: fromRow, columnId: fromColumn }, { rowId: toRo
     }
 
     return path.slice(1);
-}
+};
 
 export const getMoveData = (fromSquare, toSquare, piece) => ({
     rowsDiff: Math.abs(fromSquare.rowId - toSquare.rowId),
     colsDiff: Math.abs(fromSquare.columnId - toSquare.columnId),
     isForward: (toSquare.rowId - fromSquare.rowId) * (piece.isLightColor ? 1 : -1) < 0
-})
-
-export const isInCheck = (kingSquare, squares) => {
-    return kingSquare?.piece?.name === 'king' && squares.flatMap(_ => _)
-        .filter(_ => _.piece)
-        .filter(_ => _.piece.isLightColor !== kingSquare.piece.isLightColor)
-        .find(_ => getPossibleMove(_, kingSquare, squares));
-}
+});
 
 export const getInitialPlayerState = isLightColor => ({
     isLightColor,
     lastMove: null,
-    kingSquare: ChessSquare(isLightColor ? 7 : 0, 4)
+    kingSquare: null // ChessSquare(isLightColor ? 7 : 0, 4)
 });

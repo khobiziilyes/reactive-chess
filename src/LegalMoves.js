@@ -1,8 +1,25 @@
-import { findPath, getMoveData } from "./helpers";
+import produce from "immer";
+import { areSquaresEqual, findPath, getMoveData } from "./helpers";
+import movePiece from "./state/movePiece";
+import setInCheck from "./state/setInCheck";
 
-export const getPossibleMove = (fromSquare, toSquare, squares) => {    
-    if (!fromSquare) return false;
+
+export const willKingBeSafe = (fromSquare, toSquare, squares) => {
+    const { isLightColor } = fromSquare.piece;
+
+    const afterMove = produce({ fromSquare, toSquare, squares }, draft => {
+        movePiece(draft.fromSquare, draft.toSquare, draft.squares);
+        setInCheck(draft.squares);
+    });
+
+    const kingSquare = afterMove.squares.flatMap(_ => _).find(_ => _.piece?.name === 'king' && _.piece?.isLightColor === isLightColor);
+
+    return !kingSquare.inCheck;
+}
+
+export const getPossibleMove = (fromSquare, toSquare, squares) => {
     if (fromSquare.piece.isLightColor === toSquare.piece?.isLightColor) return false;
+    if (areSquaresEqual(fromSquare, toSquare)) return false;
 
     const moveData = getMoveData(fromSquare, toSquare, fromSquare.piece);
 
@@ -29,8 +46,8 @@ export const getPossibleMove = (fromSquare, toSquare, squares) => {
 
     // Remove blocked paths
     if (fromSquare.piece.name !== 'knight') {
-        const movePath = findPath(fromSquare, toSquare).map(_ => squares[_.rowId][_.columnId]);
-        if (movePath.find(_ => _.piece)) return null;
+        const blockingSquare = findPath(fromSquare, toSquare).find(_ => squares[_.rowId][_.columnId].piece);
+        if (blockingSquare) return null;
     }
 
     if (possibleMove === true) return { type: 'normal' };
@@ -43,7 +60,7 @@ const getPawnLegalMove = ({ rowsDiff, colsDiff, isForward }, { rowId: fromRow, p
     if (!isForward) return false;
     
     if (colsDiff === 1 && rowsDiff === 1) {
-        if (toPiece) return true
+        if (toPiece) return true;
         
         const { piece: enPassantPiece } = squares[fromRow][toColumn];
 

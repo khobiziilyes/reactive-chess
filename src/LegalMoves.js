@@ -12,7 +12,8 @@ export const willKingBeSafe = (fromSquare, toSquare, squares) => {
         setInCheck(draft);
     });
 
-    const kingSquare = afterMove[toSquare.rowId][toSquare.columnId];
+    const { isLightColor } = fromSquare.piece;
+    const kingSquare = afterMove.flatMap(_ => _).find(_ => _.piece?.name === 'king' && _?.piece.isLightColor === isLightColor);
 
     return !kingSquare.inCheck;
 }

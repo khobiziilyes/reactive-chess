@@ -82,6 +82,7 @@ const isKingMoveLegal = ({ rowsDiff, colsDiff }, fromSquare, toSquare, squares) 
     if (colsDiff <= 1 && rowsDiff <= 1) return true;
 
     const { piece } = fromSquare;
+    const { isLightColor } = piece;
     const { rowId: toRow, columnId: toColumn } = toSquare;
 
     if (piece.lastMove) return false;
@@ -104,7 +105,7 @@ const isKingMoveLegal = ({ rowsDiff, colsDiff }, fromSquare, toSquare, squares) 
     const isBlocked = isPathBlocked(path, squares);
     if (isBlocked) return false;
 
-    const attackedSquare = path.find(_ => isSquareAttacked(_, squares));
+    const attackedSquare = path.find(_ => isSquareAttacked(!isLightColor, _, squares));
     if (attackedSquare) return false;
 
     return {

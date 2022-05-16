@@ -99,7 +99,7 @@ export const isPathBlocked = (path, squares) => {
     return blockingSquare !== undefined;
 }
 
-export const isSquareAttacked = (square, squares) => 
+export const isSquareAttacked = (byColor, square, squares) => 
     Boolean(squares.flatMap(_ => _).find(fromSquare => 
-        getPossibleMove(fromSquare, square, squares)
+        fromSquare.piece?.isLightColor === byColor && getPossibleMove(fromSquare, square, squares)
     ));

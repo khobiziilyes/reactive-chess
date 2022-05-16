@@ -1,5 +1,4 @@
 import { ChessSquare } from "./ChessSquare";
-import { getPossibleMove } from "./LegalMoves";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "./Pieces";
 
 export const getColumnCode = columnId => String.fromCharCode(97 + columnId);
@@ -21,7 +20,7 @@ export const getInitialPiece = chessSquare => {
     const { rowId, columnCode, name } = chessSquare;
 
     if (name === 'd3') return Queen(false);
-    if (name === 'g6') return King(true);
+    if (name === 'g5') return King(true);
     if (name === 'e1') return null;
     
     const idx = [0, 1, 6, 7].indexOf(rowId);

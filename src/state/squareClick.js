@@ -3,19 +3,31 @@ import setIsHighlighted from './setIsHighlighted';
 import setPossibleMove from './setPossibleMove';
 import setInCheck from './setInCheck';
 
-export default function squareClick(state, { payload: chessSquare }) {
-    const { squares, highlightedSquare } = state;
+export default function squareClick(state, { payload: chessSquareData }) {
+    const { squares, highlightedSquare: highlightedSquareData } = state;
+
+    const highlightedSquare = highlightedSquareData && squares[highlightedSquareData.rowId][highlightedSquareData.columnId];
+    const chessSquare = squares[chessSquareData.rowId][chessSquareData.columnId];
+
     const isMove = highlightedSquare && chessSquare.possibleMove;
 
     if (isMove) {
         movePiece(highlightedSquare, chessSquare, squares);
-        setIsHighlighted(state, null)
+        setIsHighlighted(highlightedSquare, null);
         setInCheck(squares);
     } else {
-        setIsHighlighted(state, chessSquare);
+        setIsHighlighted(highlightedSquare, chessSquare);
     }
     
-    setPossibleMove(state);
+    if (highlightedSquare?.isHighlighted) {
+        state.highlightedSquare = highlightedSquare;
+    } else if (chessSquare.isHighlighted) {
+        state.highlightedSquare = chessSquare;
+    } else {
+        state.highlightedSquare = null;
+    }
+
+    setPossibleMove(squares, state.highlightedSquare);
 
     return state;
 }

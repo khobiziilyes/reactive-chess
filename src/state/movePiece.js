@@ -1,8 +1,6 @@
-export default function movePiece({ rowId: fromRow, columnId: fromColumn }, { rowId: toRow, columnId: toColumn }, squares) {
-    const fromSquare = squares[fromRow][fromColumn], toSquare = squares[toRow][toColumn];
-    
-    const { piece } = fromSquare;
-    const { possibleMove } = toSquare;
+export default function movePiece(fromSquare, toSquare, squares) {    
+    const { piece, rowId: fromRow} = fromSquare;
+    const { possibleMove, columnId: toColumn } = toSquare;
     
     if (possibleMove.type === 'enPassant') squares[fromRow][toColumn].piece = null;
     
@@ -11,6 +9,6 @@ export default function movePiece({ rowId: fromRow, columnId: fromColumn }, { ro
         toSquare: { ...toSquare, piece: null }
     } */
 
-    squares[fromRow][fromColumn].piece = null;
-    squares[toRow][toColumn].piece = piece;
+    fromSquare.piece = null;
+    toSquare.piece = piece;
 }

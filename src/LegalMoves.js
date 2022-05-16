@@ -3,16 +3,16 @@ import { areSquaresEqual, findPath, getMoveData } from "./helpers";
 import movePiece from "./state/movePiece";
 import setInCheck from "./state/setInCheck";
 
-
 export const willKingBeSafe = (fromSquare, toSquare, squares) => {
-    const { isLightColor } = fromSquare.piece;
+    const afterMove = produce(squares, draft => {
+        const draftFrom = draft[fromSquare.rowId][fromSquare.columnId];
+        const draftTo = draft[toSquare.rowId][toSquare.columnId];
 
-    const afterMove = produce({ fromSquare, toSquare, squares }, draft => {
-        movePiece(draft.fromSquare, draft.toSquare, draft.squares);
-        setInCheck(draft.squares);
+        movePiece(draftFrom, draftTo, draft);
+        setInCheck(draft);
     });
 
-    const kingSquare = afterMove.squares.flatMap(_ => _).find(_ => _.piece?.name === 'king' && _.piece?.isLightColor === isLightColor);
+    const kingSquare = afterMove[toSquare.rowId][toSquare.columnId];
 
     return !kingSquare.inCheck;
 }

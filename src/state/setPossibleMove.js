@@ -1,20 +1,19 @@
 import { current } from "@reduxjs/toolkit";
 import { getPossibleMove, willKingBeSafe } from "../LegalMoves";
 
-export default function setPossibleMove(state) {
-    const { squares, highlightedSquare } = state;
-    const realHighlightedSquare = highlightedSquare && state.squares[highlightedSquare.rowId][highlightedSquare.columnId];
-
+export default function setPossibleMove(squares, highlightedSquare) {
     squares.flatMap(_ => _).forEach(square => {
-        const possibleMove = realHighlightedSquare && getPossibleMove(realHighlightedSquare, square, squares);
+        const possibleMove = highlightedSquare && getPossibleMove(highlightedSquare, square, squares);
         square.possibleMove = possibleMove;
 
         if (!possibleMove) return;
 
-        const fromSquare = current(realHighlightedSquare);
-        const toSquare = current(square);
+        const fromSquare = current(highlightedSquare);
+        const toSquare = current(square)
         const currentSquares = current(squares);
 
-        square.possibleMove = willKingBeSafe(fromSquare, toSquare, currentSquares);
+        const safeMove = willKingBeSafe(fromSquare, toSquare, currentSquares);
+
+        if (!safeMove) square.possibleMove = null;
     });
 }

@@ -1,19 +1,9 @@
 import { areSquaresEqual } from "../helpers";
 
-export default function setIsHighlighted(state, chessSquare) {
-    const { highlightedSquare: oldHighlighted } = state;
-
-    if (oldHighlighted) {
-        state.squares[oldHighlighted.rowId][oldHighlighted.columnId].isHighlighted = false;
-        state.highlightedSquare = null;
-    }
+export default function setIsHighlighted(currentHighlighted, chessSquare) {
+    if (currentHighlighted) currentHighlighted.isHighlighted = false;
     
-    const shouldHighlight = chessSquare?.piece && !areSquaresEqual(oldHighlighted, chessSquare);
+    const shouldHighlight = chessSquare?.piece && !areSquaresEqual(currentHighlighted, chessSquare);
     
-    if (shouldHighlight) {
-        state.squares[chessSquare.rowId][chessSquare.columnId].isHighlighted = true;
-        state.highlightedSquare = chessSquare;
-    }
-
-    return state;
+    if (shouldHighlight) chessSquare.isHighlighted = true;
 }

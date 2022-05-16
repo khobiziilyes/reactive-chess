@@ -1,5 +1,5 @@
 import produce from "immer";
-import { areSquaresEqual, getMoveData, isMoveBlocked } from "./helpers";
+import { areSquaresEqual, findPath, getMoveData, isMoveBlocked, isPathBlocked, isSquareAttacked } from "./helpers";
 import movePiece from "./state/movePiece";
 import setInCheck from "./state/setInCheck";
 
@@ -19,6 +19,7 @@ export const willKingBeSafe = (fromSquare, toSquare, squares) => {
 }
 
 export const getPossibleMove = (fromSquare, toSquare, squares) => {
+    if (!fromSquare.piece) return false;
     if (fromSquare.piece.isLightColor === toSquare.piece?.isLightColor) return false;
     if (areSquaresEqual(fromSquare, toSquare)) return false;
 
@@ -84,6 +85,7 @@ const isKingMoveLegal = ({ rowsDiff, colsDiff }, fromSquare, toSquare, squares) 
     const { rowId: toRow, columnId: toColumn } = toSquare;
 
     if (piece.lastMove) return false;
+    if (fromSquare.inCheck) return false;
 
     const firstRow = piece.isLightColor ? 7 : 0;
     if (toRow !== firstRow) return false;
@@ -97,9 +99,14 @@ const isKingMoveLegal = ({ rowsDiff, colsDiff }, fromSquare, toSquare, squares) 
     if (!rookSquare.piece) return false;
     if (rookSquare.piece.lastMove) return false;
 
-    const isBlocked = isMoveBlocked(fromSquare, rookSquare, squares, 'rook');
+    const path = findPath(fromSquare, rookSquare);
+
+    const isBlocked = isPathBlocked(path, squares);
     if (isBlocked) return false;
-    
+
+    const attackedSquare = path.find(_ => isSquareAttacked(_, squares));
+    if (attackedSquare) return false;
+
     return {
         type: 'castling',
         rookRow: rookSquare.rowId,

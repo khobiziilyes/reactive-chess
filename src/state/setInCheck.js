@@ -1,11 +1,7 @@
-import { getPossibleMove } from '../LegalMoves';
+import { isSquareAttacked } from '../helpers';
 
 export default function setInCheck(squares) {
-    squares.flatMap(_ => _).forEach(square => {
-        const canTake = square.piece?.name === 'king' && squares.flatMap(_ => _).find(fromSquare =>
-            fromSquare.piece && getPossibleMove(fromSquare, square, squares)
-        );
-
-        square.inCheck = Boolean(canTake);
-    });
+    squares.flatMap(_ => _).forEach(square => 
+        square.inCheck = square.piece?.name === 'king' && isSquareAttacked(square, squares)
+    );
 }

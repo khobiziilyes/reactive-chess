@@ -1,4 +1,5 @@
 import { ChessSquare } from "./ChessSquare";
+import { getPossibleMove } from "./LegalMoves";
 import { Pawn, Rook, Knight, Bishop, Queen, King } from "./Pieces";
 
 export const getColumnCode = columnId => String.fromCharCode(97 + columnId);
@@ -97,3 +98,8 @@ export const isPathBlocked = (path, squares) => {
     const blockingSquare = path.find(_ => squares[_.rowId][_.columnId].piece);
     return blockingSquare !== undefined;
 }
+
+export const isSquareAttacked = (square, squares) => 
+    Boolean(squares.flatMap(_ => _).find(fromSquare => 
+        getPossibleMove(fromSquare, square, squares)
+    ));

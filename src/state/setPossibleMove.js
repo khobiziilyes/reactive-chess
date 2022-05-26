@@ -1,8 +1,9 @@
 import { current } from "@reduxjs/toolkit";
+import { forEachSquare } from "../helpers";
 import { getPossibleMove, willKingBeSafe } from "../LegalMoves";
 
 export default function setPossibleMove(squares, highlightedSquare) {
-    squares.flatMap(_ => _).forEach(square => {
+    forEachSquare(squares, square => {
         const possibleMove = highlightedSquare && getPossibleMove(highlightedSquare, square, squares);
         square.possibleMove = possibleMove;
 

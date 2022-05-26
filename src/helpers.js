@@ -100,6 +100,12 @@ export const isPathBlocked = (path, squares) => {
 }
 
 export const isSquareAttacked = (byColor, square, squares) => 
-    Boolean(squares.flatMap(_ => _).find(fromSquare => 
+    Boolean(findSquare(squares, fromSquare => 
         fromSquare.piece?.isLightColor === byColor && getPossibleMove(fromSquare, square, squares)
     ));
+
+export const flatSquares = squares => squares.flatMap(_ => _);
+
+export const forEachSquare = (squares, callBack) => flatSquares(squares).forEach(callBack);
+export const findSquare = (squares, callBack) => flatSquares(squares).find(callBack);
+export const filterSquares = (squares, callBack) => flatSquares(squares).filter(callBack);

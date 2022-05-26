@@ -1,5 +1,5 @@
 import produce from "immer";
-import { areSquaresEqual, findPath, getMoveData, isMoveBlocked, isPathBlocked, isSquareAttacked } from "./helpers";
+import { areSquaresEqual, findPath, findSquare, getMoveData, isMoveBlocked, isPathBlocked, isSquareAttacked } from "./helpers";
 import movePiece from "./state/movePiece";
 import setInCheck from "./state/setInCheck";
 
@@ -13,7 +13,7 @@ export const willKingBeSafe = (fromSquare, toSquare, squares) => {
     });
 
     const { isLightColor } = fromSquare.piece;
-    const kingSquare = afterMove.flatMap(_ => _).find(_ => _.piece?.name === 'king' && _?.piece.isLightColor === isLightColor);
+    const kingSquare = findSquare(afterMove, _ => _.piece?.name === 'king' && _?.piece.isLightColor === isLightColor);
 
     return !kingSquare.inCheck;
 }

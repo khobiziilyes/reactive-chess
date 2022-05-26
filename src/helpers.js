@@ -20,9 +20,9 @@ export const getInitialSquares = () => {
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode, name } = chessSquare;
 
-    if (name === 'f1') return null;
-    if (name === 'g1') return null;
-    if (['c1', 'd1'].includes(name)) return null;
+    // if (name === 'f1') return null;
+    // if (name === 'g1') return null;
+    // if (['c1', 'd1'].includes(name)) return null;
 
     // if (name === 'd3') return Queen(false);
     // if (name === 'g5') return King(true);

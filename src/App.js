@@ -1,10 +1,11 @@
 import ChessSquareComponent from './ChessSquare';
 import ChessHeader from './ChessHeader';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { ActionCreators } from "redux-undo";
 
-function App() {
-	const { squares } = useSelector(state => state.squares);
+function ChessBoard() {
+	const { squares } = useSelector(state => state.squares.present);
 
 	return (
 		<table>
@@ -37,4 +38,27 @@ function App() {
 	);
 }
 
-export default App;
+export default function App() {
+	const dispatch = useDispatch();
+	
+	const onSomeDo = isRedo => () =>
+		dispatch(
+			(isRedo ? ActionCreators.redo : ActionCreators.undo)()
+		);
+
+	const onUndo = onSomeDo(false);
+	const onRedo = onSomeDo(true);
+	
+	return (
+		<div>
+			<div>
+				<button onClick={onUndo}>Back</button>
+				<button onClick={onRedo}>Forward</button>
+			</div>
+
+			<div>
+				<ChessBoard></ChessBoard>
+			</div>
+		</div>
+	)
+}

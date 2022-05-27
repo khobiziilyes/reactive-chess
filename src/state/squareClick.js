@@ -2,9 +2,10 @@ import movePiece from './movePiece';
 import setIsHighlighted from './setIsHighlighted';
 import setPossibleMove from './setPossibleMove';
 import setInCheck from './setInCheck';
+import setWhoWon from './setWhoWon';
 
-export default function squareClick(state, { payload: chessSquareData }) {
-    if (!state.highlightedSquare && chessSquareData.piece.isLightColor !== state.isLightTurn) return state;
+export default function squareClick(state, { type, payload: chessSquareData }) {
+    if (!state.highlightedSquare && chessSquareData.piece.isLightColor !== state.isLightTurn) return;
 
     const { squares, highlightedSquare: highlightedSquareData } = state;
 
@@ -12,6 +13,7 @@ export default function squareClick(state, { payload: chessSquareData }) {
     const chessSquare = squares[chessSquareData.rowId][chessSquareData.columnId];
 
     const isMove = highlightedSquare && chessSquare.possibleMove;
+    const isLightColor = highlightedSquare?.piece.isLightColor;
 
     if (isMove) {
         movePiece(highlightedSquare, chessSquare, squares);
@@ -32,8 +34,7 @@ export default function squareClick(state, { payload: chessSquareData }) {
     }
 
     setPossibleMove(squares, state.highlightedSquare);
-    
-    // TODO: Check for checkmate
+    if (isMove) setWhoWon(state, isLightColor);
 
     return state;
 }

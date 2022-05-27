@@ -39,6 +39,7 @@ function ChessBoard() {
 }
 
 export default function App() {
+	const { gameState } = useSelector(state => state.squares.present);
 	const dispatch = useDispatch();
 	
 	const onSomeDo = isRedo => () =>
@@ -51,6 +52,8 @@ export default function App() {
 	
 	return (
 		<div>
+			<h1 style={{color: 'white'}}>State is: { gameState || 'normal' }</h1>
+
 			<div>
 				<button onClick={onUndo}>Back</button>
 				<button onClick={onRedo}>Forward</button>

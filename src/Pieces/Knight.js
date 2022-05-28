@@ -1,7 +1,6 @@
 export default function Knight(isLightColor) {
     return {
-        isLightColor: isLightColor,
-        canJump: false,
+        isLightColor,
         name: 'knight',
     }
 }

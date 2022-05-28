@@ -11,7 +11,7 @@ const resetGameMiddleware = storeAPI => next => action => {
             setTimeout(() => {
                 storeAPI.dispatch(ActionCreators.clearHistory());
                 storeAPI.dispatch(resetState());
-            }, 3000);
+            }, 5000);
         }
     }
 }

@@ -1,19 +1,18 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import undoable from "redux-undo";
 
-import { getInitialPlayerState, getInitialSquares } from "../helpers";
+import { getInitialSquares } from "../helpers";
 import squareClickReducer from "./squareClick";
 import resetGameMiddleware from './resetGameMiddleware';
-
-const resetStateReducer = () => initialState;
 
 export const initialState = {
     squares: getInitialSquares(),
     highlightedSquare: null,
-    players: [getInitialPlayerState(true), getInitialPlayerState(false)],
     isLightTurn: true,
     gameState: null
 }
+
+const resetStateReducer = () => initialState;
 
 export const squaresSlice = createSlice({
     name: 'squares',

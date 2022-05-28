@@ -9,7 +9,9 @@ export default function movePiece(fromSquare, toSquare, squares) {
 
     if (possibleMove.type === 'enPassant') {
         squares[fromRow][toColumn].piece = null;
-    } else if (possibleMove.type === 'castling') {
+    }
+    
+    if (possibleMove.type === 'castling') {
         const { rookRow, rookColumn, isShortCastle } = possibleMove;
 
         const rookSquare = squares[rookRow][rookColumn];

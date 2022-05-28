@@ -17,29 +17,9 @@ export const getInitialSquares = () => {
     });
 };
 
-const testing = false;
-
 export const getInitialPiece = chessSquare => {
-    const { rowId, columnCode, name } = chessSquare;
+    const { rowId, columnCode } = chessSquare;
 
-    if (testing) {
-        if (name === 'g7') return Queen(true);
-        if (name === 'a8') return Queen(true);
-        if (name === 'f1') return King(false);
-        if (name === 'b3') return King(true);
-        if (name === 'b2') return Pawn(false);
-
-        return null;
-    
-        // if (name === 'f1') return null;
-        // if (name === 'g1') return null;
-        // if (['c1', 'd1'].includes(name)) return null;
-
-        // if (name === 'd3') return Queen(false);
-        // if (name === 'g5') return King(true);
-        // if (name === 'e1') return null;
-    }
-    
     const idx = [0, 1, 6, 7].indexOf(rowId);
     
     if (idx < 0) return null;
@@ -91,12 +71,6 @@ export const getMoveData = (fromSquare, toSquare, piece) => ({
     rowsDiff: Math.abs(fromSquare.rowId - toSquare.rowId),
     colsDiff: Math.abs(fromSquare.columnId - toSquare.columnId),
     isForward: (toSquare.rowId - fromSquare.rowId) * (piece.isLightColor ? 1 : -1) < 0
-});
-
-export const getInitialPlayerState = isLightColor => ({
-    isLightColor,
-    lastMove: null,
-    kingSquare: null // ChessSquare(isLightColor ? 7 : 0, 4)
 });
 
 export const isMoveBlocked = (fromSquare, toSquare, squares, pieceName) => {

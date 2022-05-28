@@ -13,7 +13,7 @@ export default function squareClick(state, { payload: chessSquareData }) {
     const isMove = highlightedSquare && chessSquare.possibleMove;
     const isLightColor = highlightedSquare?.piece.isLightColor;
 
-    if (!state.highlightedSquare && chessSquareData.piece.isLightColor !== state.isLightTurn) return;
+    if (!state.highlightedSquare && chessSquare.piece.isLightColor !== state.isLightTurn) return;
     if (!isMove && state.highlightedSquare && chessSquare.piece?.isLightColor !== state.isLightTurn) return;
 
     if (isMove) {

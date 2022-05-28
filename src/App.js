@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from "redux-undo";
 
 function ChessBoard() {
-	const { squares } = useSelector(state => state.squares.present);
+	const { squares, isLightTurn } = useSelector(state => state.squares.present);
+	const finalSquares = isLightTurn ? squares : [...squares].map(_ => [..._].reverse()).reverse();
 
 	return (
 		<table>
@@ -15,7 +16,7 @@ function ChessBoard() {
 				</tr>
 
 				{
-					squares.map(chessRow => 
+					finalSquares.map(chessRow => 
 						<tr key={`tr-${chessRow[0].rowId}`}>
 							<td className="chess-text">{ chessRow[0].rowCode } - { chessRow[0].rowId }</td>
 							

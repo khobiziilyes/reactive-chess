@@ -5,8 +5,6 @@ import setInCheck from './setInCheck';
 import setWhoWon from './setWhoWon';
 
 export default function squareClick(state, { payload: chessSquareData }) {
-    if (!state.highlightedSquare && chessSquareData.piece.isLightColor !== state.isLightTurn) return;
-
     const { squares, highlightedSquare: highlightedSquareData } = state;
 
     const highlightedSquare = highlightedSquareData && squares[highlightedSquareData.rowId][highlightedSquareData.columnId];
@@ -14,6 +12,9 @@ export default function squareClick(state, { payload: chessSquareData }) {
 
     const isMove = highlightedSquare && chessSquare.possibleMove;
     const isLightColor = highlightedSquare?.piece.isLightColor;
+
+    if (!state.highlightedSquare && chessSquareData.piece.isLightColor !== state.isLightTurn) return;
+    if (!isMove && state.highlightedSquare && chessSquare.piece?.isLightColor !== state.isLightTurn) return;
 
     if (isMove) {
         movePiece(highlightedSquare, chessSquare, squares);

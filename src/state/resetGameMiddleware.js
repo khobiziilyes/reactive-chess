@@ -1,4 +1,5 @@
 import { resetState } from "./store";
+import { ActionCreators } from 'redux-undo';
 
 const resetGameMiddleware = storeAPI => next => action => {
     next(action);
@@ -7,9 +8,10 @@ const resetGameMiddleware = storeAPI => next => action => {
         const state = storeAPI.getState().squares.present;
         
         if (state.gameState) {
-            setTimeout(() => 
-                storeAPI.dispatch(resetState())
-            , 3000);
+            setTimeout(() => {
+                storeAPI.dispatch(ActionCreators.clearHistory());
+                storeAPI.dispatch(resetState());
+            }, 3000);
         }
     }
 }

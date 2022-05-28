@@ -17,7 +17,7 @@ export const getInitialSquares = () => {
     });
 };
 
-const testing = true;
+const testing = false;
 
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode, name } = chessSquare;

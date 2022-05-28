@@ -4,7 +4,7 @@ import setPossibleMove from './setPossibleMove';
 import setInCheck from './setInCheck';
 import setWhoWon from './setWhoWon';
 
-export default function squareClick(state, { type, payload: chessSquareData }) {
+export default function squareClick(state, { payload: chessSquareData }) {
     if (!state.highlightedSquare && chessSquareData.piece.isLightColor !== state.isLightTurn) return;
 
     const { squares, highlightedSquare: highlightedSquareData } = state;

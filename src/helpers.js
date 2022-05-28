@@ -22,7 +22,7 @@ export const getInitialPiece = chessSquare => {
 
     if (name === 'g7') return Queen(true);
     if (name === 'a8') return Queen(true);
-    if (name === 'h1') return King(false);
+    if (name === 'f1') return King(false);
     if (name === 'b3') return King(true);
 
     return null;

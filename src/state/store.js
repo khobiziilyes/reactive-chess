@@ -29,7 +29,7 @@ const squareClick = squaresSlice.reducer;
 export const store = configureStore({
     reducer: {
         squares: undoable(squareClick, {
-            filter: (...[,,previousHistory]) => !!previousHistory.present.highlightedSquare
+            filter: action => action.payload.possibleMove
         })
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(resetGameMiddleware)

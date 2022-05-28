@@ -17,23 +17,28 @@ export const getInitialSquares = () => {
     });
 };
 
+const testing = true;
+
 export const getInitialPiece = chessSquare => {
     const { rowId, columnCode, name } = chessSquare;
 
-    if (name === 'g7') return Queen(true);
-    if (name === 'a8') return Queen(true);
-    if (name === 'f1') return King(false);
-    if (name === 'b3') return King(true);
+    if (testing) {
+        if (name === 'g7') return Queen(true);
+        if (name === 'a8') return Queen(true);
+        if (name === 'f1') return King(false);
+        if (name === 'b3') return King(true);
+        if (name === 'b2') return Pawn(false);
 
-    return null;
+        return null;
+    
+        // if (name === 'f1') return null;
+        // if (name === 'g1') return null;
+        // if (['c1', 'd1'].includes(name)) return null;
 
-    // if (name === 'f1') return null;
-    // if (name === 'g1') return null;
-    // if (['c1', 'd1'].includes(name)) return null;
-
-    // if (name === 'd3') return Queen(false);
-    // if (name === 'g5') return King(true);
-    // if (name === 'e1') return null;
+        // if (name === 'd3') return Queen(false);
+        // if (name === 'g5') return King(true);
+        // if (name === 'e1') return null;
+    }
     
     const idx = [0, 1, 6, 7].indexOf(rowId);
     

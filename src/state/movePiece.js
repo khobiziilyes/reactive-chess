@@ -25,6 +25,8 @@ export default function movePiece(fromSquare, toSquare, squares) {
         }
     }
 
+    if (piece.name === 'pawn' && [0, 7].includes(toSquare.rowId)) piece.name = 'queen';
+
     fromSquare.piece = null;
     toSquare.piece = piece;
 }

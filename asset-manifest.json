@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/reactive-chess/static/js/main.cc4b2504.js",
+    "index.html": "/reactive-chess/index.html",
+    "main.cc4b2504.js.map": "/reactive-chess/static/js/main.cc4b2504.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.cc4b2504.js"
+  ]
+}

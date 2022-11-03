@@ -1,6 +1,6 @@
 export default function Pawn(isLightColor) {
-    return {
-        isLightColor,
-        name: 'pawn',
-    }
+  return {
+    isLightColor,
+    name: "pawn",
+  };
 }

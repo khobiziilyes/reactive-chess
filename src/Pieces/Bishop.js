@@ -1,6 +1,6 @@
 export default function Bishop(isLightColor) {
-    return {
-        isLightColor,
-        name: 'bishop',
-    }
+  return {
+    isLightColor,
+    name: "bishop",
+  };
 }

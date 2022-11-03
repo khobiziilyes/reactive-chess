@@ -1,6 +1,6 @@
 export default function Queen(isLightColor) {
-    return {
-        isLightColor,
-        name: 'queen',
-    }
+  return {
+    isLightColor,
+    name: "queen",
+  };
 }

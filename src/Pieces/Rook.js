@@ -1,6 +1,6 @@
 export default function Rook(isLightColor) {
-    return {
-        isLightColor,
-        name: 'rook',
-    }
+  return {
+    isLightColor,
+    name: "rook",
+  };
 }

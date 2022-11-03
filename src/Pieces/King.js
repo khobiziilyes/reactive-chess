@@ -1,6 +1,6 @@
 export default function King(isLightColor) {
-    return {
-        isLightColor,
-        name: 'king',
-    }
+  return {
+    isLightColor,
+    name: "king",
+  };
 }
